@@ -10,19 +10,25 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ForestMarathone
+namespace ForestMarathone.Pages.Administrator
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для LoggerMenu.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LoggerMenu : Window
     {
-        public MainWindow()
+        public LoggerMenu()
         {
             InitializeComponent();
+
+
+            using (var context = new ForestMarathoneEntities())
+            {
+                var source = context.LoginHistory.Select(x => x).ToList();
+                _history.ItemsSource = source;
+            }
         }
     }
 }

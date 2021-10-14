@@ -1,0 +1,56 @@
+﻿<Window x:Class="ForestMarathone.Pages.Administrator.LoggerMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ForestMarathone.Pages.Administrator"
+        xmlns:source="clr-namespace:ForestMarathone.AdditionalClasses"
+        mc:Ignorable="d"
+        Title="Логгирование" Height="720" Width="1280">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.1*"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0.1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="0.1*"/>
+        </Grid.RowDefinitions>        
+        <DataGrid Grid.Row="2" Grid.Column="1" BorderThickness="2" BorderBrush="Black" HorizontalAlignment="Stretch" FontSize="20" AutoGenerateColumns="False" x:Name="_history">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Login}" Header="Логин" Width="100" FontSize="20"/>
+                <DataGridTextColumn Binding="{Binding IPAddress}" Header="Ip адресс" Width="200" FontSize="20"/>
+                <DataGridTextColumn Binding="{Binding ConnectionTime}" Header="Время попытки" Width="200" FontSize="20"/>
+                <DataGridTextColumn Binding="{Binding ValidAuth}" Header="Статус попытки" Width="200" FontSize="20"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBlock x:Name="_someInfo" Grid.Row="3" Grid.Column="1" Text="Тут будет какой-то текст и цифры" VerticalAlignment="Center" FontSize="20"/>
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.7*"/>
+                <RowDefinition Height="0.3*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*"/>
+                    <ColumnDefinition Width="0.6*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal">
+                    <TextBlock Text="Тип входа" FontSize="20"/>
+                    <ComboBox Margin="20, 0,0,0" x:Name="_comboBox" ItemsSource="{Binding Source={source:EnumBindingSource {x:Type source:Status}}}" SelectedItem="0"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
+                    <TextBlock Text="Поиск по логину" FontSize="20"/>
+                    <TextBox x:Name="_filter" Margin="20,0,0,0" Width="400"/>
+                </StackPanel>
+            </Grid>
+            
+
+        </Grid>
+    </Grid>
+</Window>

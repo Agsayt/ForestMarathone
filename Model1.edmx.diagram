@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="18894fc3bec949efb7e03e7ca5ac3e22" Name="Diagram1" ZoomLevel="79">
+        <EntityTypeShape EntityType="ForestMarathoneModel.Countries" Width="1.5" PointX="4.625" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForestMarathoneModel.LoginHistory" Width="1.5" PointX="9" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForestMarathoneModel.MarathonResults" Width="1.5" PointX="8.875" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForestMarathoneModel.MarathonStatus" Width="1.5" PointX="11.625" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForestMarathoneModel.Participant" Width="1.5" PointX="6.625" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForestMarathoneModel.Roles" Width="1.5" PointX="6.875" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForestMarathoneModel.Sets" Width="1.5" PointX="11.625" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForestMarathoneModel.SponsoredParticipants" Width="1.5" PointX="4.625" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForestMarathoneModel.Sponsors" Width="1.5" PointX="2.25" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForestMarathoneModel.sysdiagrams" Width="1.5" PointX="12" PointY="1.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="ForestMarathoneModel.TypeDistances" Width="1.5" PointX="11.625" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="ForestMarathoneModel.Users" Width="1.5" PointX="4" PointY="1.375" IsExpanded="true" />
+        <AssociationConnector Association="ForestMarathoneModel.FK_Participant_Countries" ManuallyRouted="false" />
+        <AssociationConnector Association="ForestMarathoneModel.FK_Sponsors_Sponsors" ManuallyRouted="false" />
+        <AssociationConnector Association="ForestMarathoneModel.FK_MarathonResults_MarathonStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="ForestMarathoneModel.FK_MarathonResults_Participant" ManuallyRouted="false" />
+        <AssociationConnector Association="ForestMarathoneModel.FK_MarathonResults_Sets" ManuallyRouted="false" />
+        <AssociationConnector Association="ForestMarathoneModel.FK_MarathonResults_TypeDistances" ManuallyRouted="false" />
+        <AssociationConnector Association="ForestMarathoneModel.FK_SponsoredParticipants_Participant" ManuallyRouted="false" />
+        <AssociationConnector Association="ForestMarathoneModel.FK_Users_Participant" ManuallyRouted="false" />
+        <AssociationConnector Association="ForestMarathoneModel.FK_Users_Roles" ManuallyRouted="false" />
+        <AssociationConnector Association="ForestMarathoneModel.FK_SponsoredParticipants_Sponsors" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ForestMarathoneModel.Administrator" Width="1.5" PointX="0.875" PointY="1.5" />
+        <AssociationConnector Association="ForestMarathoneModel.FK_Administrator_Users" />
+        <AssociationConnector Association="ForestMarathoneModel.FK_Participant_Users" ManuallyRouted="true" >
+          <ConnectorPoint PointX="4.34375" PointY="4.3167936197916656" />
+          <ConnectorPoint PointX="4.34375" PointY="4.9564746679687435" />
+          <ConnectorPoint PointX="6.625" PointY="4.9564746679687435" />
+        </AssociationConnector>
+        <AssociationConnector Association="ForestMarathoneModel.FK_Sponsors_Users" />
+        <EntityTypeShape EntityType="ForestMarathoneModel.UserStatus" Width="1.5" PointX="6.125" PointY="0.5" />
+        <AssociationConnector Association="ForestMarathoneModel.FK_Users_UserStatus" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
