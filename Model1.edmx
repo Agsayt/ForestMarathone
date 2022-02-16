@@ -20,7 +20,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Title" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="Flag" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="LoginHistory">
           <Key>
@@ -63,15 +64,15 @@
           <Property Name="Sex" Type="bit" Nullable="false" />
           <Property Name="Birthday" Type="date" Nullable="false" />
           <Property Name="CountryId" Type="int" Nullable="false" />
-          <Property Name="Phone" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="Phone" Type="char" MaxLength="17" Nullable="false" />
           <Property Name="Wallet" Type="decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="Photo" Type="image" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="RoleId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="15" Nullable="false" />
         </EntityType>
         <EntityType Name="Sets">
@@ -100,6 +101,7 @@
           <Property Name="MiddleName" Type="nvarchar" MaxLength="30" />
           <Property Name="LastName" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="CountryId" Type="int" Nullable="false" />
+          <Property Name="CardNumber" Type="numeric" Precision="16" Scale="0" Nullable="false" />
           <Property Name="CardValidMonth" Type="int" Nullable="false" />
           <Property Name="CardValidYear" Type="int" Nullable="false" />
           <Property Name="TotalSum" Type="decimal" Precision="18" Scale="0" Nullable="false" />
@@ -126,19 +128,20 @@
         </EntityType>
         <EntityType Name="Users">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="Login" Type="varchar" MaxLength="64" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="RoleId" Type="int" Nullable="false" />
           <Property Name="UserStatusId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="UserStatus">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="StatusId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="15" Nullable="false" />
         </EntityType>
         <Association Name="FK_Administrator_Users">
@@ -146,7 +149,7 @@
           <End Role="Administrator" Type="Self.Administrator" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="Administrator">
               <PropertyRef Name="UserId" />
@@ -218,7 +221,7 @@
           <End Role="Participant" Type="Self.Participant" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="Participant">
               <PropertyRef Name="UserId" />
@@ -266,7 +269,7 @@
           <End Role="Sponsors" Type="Self.Sponsors" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="UserId" />
             </Principal>
             <Dependent Role="Sponsors">
               <PropertyRef Name="UserId" />
@@ -278,22 +281,10 @@
           <End Role="Users" Type="Self.Users" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Roles">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="RoleId" />
             </Principal>
             <Dependent Role="Users">
               <PropertyRef Name="RoleId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Users_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Users1" Type="Self.Users" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Users1">
-              <PropertyRef Name="Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -302,44 +293,13 @@
           <End Role="Users" Type="Self.Users" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UserStatus">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="StatusId" />
             </Principal>
             <Dependent Role="Users">
               <PropertyRef Name="UserStatusId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
-        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="Хранилище ForestMarathoneModelContainer">
           <EntitySet Name="Administrator" EntityType="Self.Administrator" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
@@ -403,10 +363,6 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="FK_Users_Users" Association="Self.FK_Users_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Users1" EntitySet="Users" />
-          </AssociationSet>
           <AssociationSet Name="FK_Users_UserStatus" Association="Self.FK_Users_UserStatus">
             <End Role="UserStatus" EntitySet="UserStatus" />
             <End Role="Users" EntitySet="Users" />
@@ -416,14 +372,26 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ForestMarathoneModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Administrator">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Administrator_Users" FromRole="Administrator" ToRole="Users" />
+        </EntityType>
         <EntityType Name="Countries">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Participant" Relationship="Self.FK_Participant_Countries" FromRole="Countries" ToRole="Participant" />
           <NavigationProperty Name="Sponsors" Relationship="Self.FK_Sponsors_Sponsors" FromRole="Countries" ToRole="Sponsors" />
+          <Property Name="Flag" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="LoginHistory">
           <Key>
@@ -464,26 +432,26 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Sex" Type="Boolean" Nullable="false" />
           <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="CountryId" Type="Int32" Nullable="false" />
-          <Property Name="Phone" Type="String" MaxLength="15" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="17" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="Wallet" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="Countries" Relationship="Self.FK_Participant_Countries" FromRole="Participant" ToRole="Countries" />
           <NavigationProperty Name="MarathonResults" Relationship="Self.FK_MarathonResults_Participant" FromRole="Participant" ToRole="MarathonResults" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Participant_Users" FromRole="Participant" ToRole="Users" />
           <NavigationProperty Name="SponsoredParticipants" Relationship="Self.FK_SponsoredParticipants_Participant" FromRole="Participant" ToRole="SponsoredParticipants" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Users1" Relationship="ForestMarathoneModel.FK_Participant_Users" FromRole="Participant" ToRole="Users" />
         </EntityType>
         <EntityType Name="Roles">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="RoleId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleId" Type="ForestMarathoneModel.Role" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Users_Roles" FromRole="Roles" ToRole="Users" />
         </EntityType>
@@ -520,10 +488,11 @@
           <Property Name="CardValidYear" Type="Int32" Nullable="false" />
           <Property Name="TotalSum" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="Logo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Countries" Relationship="Self.FK_Sponsors_Sponsors" FromRole="Sponsors" ToRole="Countries" />
           <NavigationProperty Name="SponsoredParticipants" Relationship="Self.FK_SponsoredParticipants_Sponsors" FromRole="Sponsors" ToRole="SponsoredParticipants" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Users1" Relationship="ForestMarathoneModel.FK_Sponsors_Users" FromRole="Sponsors" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Sponsors_Users" FromRole="Sponsors" ToRole="Users" />
+          <Property Name="CardNumber" Type="Decimal" Nullable="false" Precision="16" Scale="0" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -546,19 +515,40 @@
         </EntityType>
         <EntityType Name="Users">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="UserId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="Login" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RoleId" Type="ForestMarathoneModel.Role" Nullable="false" />
+          <Property Name="UserStatusId" Type="ForestMarathoneModel.UStatus" Nullable="false" />
+          <NavigationProperty Name="Administrator" Relationship="Self.FK_Administrator_Users" FromRole="Users" ToRole="Administrator" />
+          <NavigationProperty Name="Participant" Relationship="Self.FK_Participant_Users" FromRole="Users" ToRole="Participant" />
           <NavigationProperty Name="Roles" Relationship="Self.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
-          <NavigationProperty Name="Administrator1" Relationship="ForestMarathoneModel.FK_Administrator_Users" FromRole="Users" ToRole="Administrator" />
-          <NavigationProperty Name="Participant1" Relationship="ForestMarathoneModel.FK_Participant_Users" FromRole="Users" ToRole="Participant" />
-          <NavigationProperty Name="Sponsors1" Relationship="ForestMarathoneModel.FK_Sponsors_Users" FromRole="Users" ToRole="Sponsors" />
-          <Property Name="UserStatusId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="UserStatus" Relationship="ForestMarathoneModel.FK_Users_UserStatus" FromRole="Users" ToRole="UserStatus" />
+          <NavigationProperty Name="Sponsors" Relationship="Self.FK_Sponsors_Users" FromRole="Users" ToRole="Sponsors" />
+          <NavigationProperty Name="UserStatus" Relationship="Self.FK_Users_UserStatus" FromRole="Users" ToRole="UserStatus" />
         </EntityType>
+        <EntityType Name="UserStatus">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="ForestMarathoneModel.UStatus" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Users_UserStatus" FromRole="UserStatus" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_Administrator_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Administrator" Type="Self.Administrator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Administrator">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Participant_Countries">
           <End Role="Countries" Type="Self.Countries" Multiplicity="1" />
           <End Role="Participant" Type="Self.Participant" Multiplicity="*" />
@@ -631,6 +621,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Participant_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Participant" Type="Self.Participant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Participant">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SponsoredParticipants_Participant">
           <End Role="Participant" Type="Self.Participant" Multiplicity="1" />
           <End Role="SponsoredParticipants" Type="Self.SponsoredParticipants" Multiplicity="*" />
@@ -643,24 +645,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Users_Participant">
-          <End Role="Participant" Type="Self.Participant" Multiplicity="1" />
-          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Participant">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Users">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Users_Roles">
           <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
           <End Role="Users" Type="Self.Users" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Roles">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="RoleId" />
             </Principal>
             <Dependent Role="Users">
               <PropertyRef Name="RoleId" />
@@ -679,7 +669,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Sponsors_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Sponsors" Type="Self.Sponsors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Sponsors">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_UserStatus">
+          <End Role="UserStatus" Type="Self.UserStatus" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserStatus">
+              <PropertyRef Name="StatusId" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="UserStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ForestMarathoneEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Administrator" EntityType="Self.Administrator" />
           <EntitySet Name="Countries" EntityType="Self.Countries" />
           <EntitySet Name="LoginHistory" EntityType="Self.LoginHistory" />
           <EntitySet Name="MarathonResults" EntityType="Self.MarathonResults" />
@@ -692,6 +707,11 @@
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="TypeDistances" EntityType="Self.TypeDistances" />
           <EntitySet Name="Users" EntityType="Self.Users" />
+          <EntitySet Name="UserStatus" EntityType="Self.UserStatus" />
+          <AssociationSet Name="FK_Administrator_Users" Association="Self.FK_Administrator_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Administrator" EntitySet="Administrator" />
+          </AssociationSet>
           <AssociationSet Name="FK_Participant_Countries" Association="Self.FK_Participant_Countries">
             <End Role="Countries" EntitySet="Countries" />
             <End Role="Participant" EntitySet="Participant" />
@@ -716,13 +736,13 @@
             <End Role="TypeDistances" EntitySet="TypeDistances" />
             <End Role="MarathonResults" EntitySet="MarathonResults" />
           </AssociationSet>
+          <AssociationSet Name="FK_Participant_Users" Association="Self.FK_Participant_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Participant" EntitySet="Participant" />
+          </AssociationSet>
           <AssociationSet Name="FK_SponsoredParticipants_Participant" Association="Self.FK_SponsoredParticipants_Participant">
             <End Role="Participant" EntitySet="Participant" />
             <End Role="SponsoredParticipants" EntitySet="SponsoredParticipants" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Users_Participant" Association="Self.FK_Users_Participant">
-            <End Role="Participant" EntitySet="Participant" />
-            <End Role="Users" EntitySet="Users" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_Roles" Association="Self.FK_Users_Roles">
             <End Role="Roles" EntitySet="Roles" />
@@ -732,142 +752,46 @@
             <End Role="Sponsors" EntitySet="Sponsors" />
             <End Role="SponsoredParticipants" EntitySet="SponsoredParticipants" />
           </AssociationSet>
-          <FunctionImport Name="sp_alterdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_creatediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(ForestMarathoneModel.sp_helpdiagramdefinition_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(ForestMarathoneModel.sp_helpdiagrams_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_renamediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="new_diagramname" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_upgraddiagrams" />
-          <EntitySet Name="Administrator" EntityType="ForestMarathoneModel.Administrator" />
-          <AssociationSet Name="FK_Administrator_Users" Association="ForestMarathoneModel.FK_Administrator_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Administrator" EntitySet="Administrator" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Participant_Users" Association="ForestMarathoneModel.FK_Participant_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Participant" EntitySet="Participant" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Sponsors_Users" Association="ForestMarathoneModel.FK_Sponsors_Users">
+          <AssociationSet Name="FK_Sponsors_Users" Association="Self.FK_Sponsors_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Sponsors" EntitySet="Sponsors" />
           </AssociationSet>
-          <EntitySet Name="UserStatus" EntityType="ForestMarathoneModel.UserStatus" />
-          <AssociationSet Name="FK_Users_UserStatus" Association="ForestMarathoneModel.FK_Users_UserStatus">
+          <AssociationSet Name="FK_Users_UserStatus" Association="Self.FK_Users_UserStatus">
             <End Role="UserStatus" EntitySet="UserStatus" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
-        </ComplexType>
-        <EntityType Name="Administrator">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-          <Property Name="UserId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Users1" Relationship="ForestMarathoneModel.FK_Administrator_Users" FromRole="Administrator" ToRole="Users" />
-        </EntityType>
-        <Association Name="FK_Administrator_Users">
-          <End Type="ForestMarathoneModel.Users" Role="Users" Multiplicity="1" />
-          <End Type="ForestMarathoneModel.Administrator" Role="Administrator" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Administrator">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Participant_Users">
-          <End Type="ForestMarathoneModel.Users" Role="Users" Multiplicity="1" />
-          <End Type="ForestMarathoneModel.Participant" Role="Participant" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Participant">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Sponsors_Users">
-          <End Type="ForestMarathoneModel.Users" Role="Users" Multiplicity="1" />
-          <End Type="ForestMarathoneModel.Sponsors" Role="Sponsors" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Sponsors">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="UserStatus">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Users" Relationship="ForestMarathoneModel.FK_Users_UserStatus" FromRole="UserStatus" ToRole="Users" />
-        </EntityType>
-        <Association Name="FK_Users_UserStatus">
-          <End Type="ForestMarathoneModel.UserStatus" Role="UserStatus" Multiplicity="1" />
-          <End Type="ForestMarathoneModel.Users" Role="Users" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserStatus">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Users">
-              <PropertyRef Name="UserStatusId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
+        <EnumType Name="Role">
+          <Member Name="Administrator" Value="1" />
+          <Member Name="Participant" />
+          <Member Name="Sponsor" />
+        </EnumType>
+        <EnumType Name="UStatus">
+          <Member Name="Activated" Value="1" />
+          <Member Name="Suspended" />
+          <Member Name="Banned" />
+        </EnumType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="Хранилище ForestMarathoneModelContainer" CdmEntityContainer="ForestMarathoneEntities">
+          <EntitySetMapping Name="Administrator">
+            <EntityTypeMapping TypeName="ForestMarathoneModel.Administrator">
+              <MappingFragment StoreEntitySet="Administrator">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Countries">
             <EntityTypeMapping TypeName="ForestMarathoneModel.Countries">
               <MappingFragment StoreEntitySet="Countries">
+                <ScalarProperty Name="Flag" ColumnName="Flag" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
               </MappingFragment>
@@ -908,8 +832,8 @@
           <EntitySetMapping Name="Participant">
             <EntityTypeMapping TypeName="ForestMarathoneModel.Participant">
               <MappingFragment StoreEntitySet="Participant">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
@@ -925,7 +849,7 @@
           <EntitySetMapping Name="Roles">
             <EntityTypeMapping TypeName="ForestMarathoneModel.Roles">
               <MappingFragment StoreEntitySet="Roles">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -952,7 +876,7 @@
           <EntitySetMapping Name="Sponsors">
             <EntityTypeMapping TypeName="ForestMarathoneModel.Sponsors">
               <MappingFragment StoreEntitySet="Sponsors">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
@@ -962,6 +886,7 @@
                 <ScalarProperty Name="CardValidYear" ColumnName="CardValidYear" />
                 <ScalarProperty Name="TotalSum" ColumnName="TotalSum" />
                 <ScalarProperty Name="Logo" ColumnName="Logo" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -988,54 +913,20 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="ForestMarathoneModel.Users">
               <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="UserStatusId" ColumnName="UserStatusId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Login" ColumnName="Login" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="RoleId" ColumnName="RoleId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="Хранилище ForestMarathoneModel.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="Хранилище ForestMarathoneModel.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="Хранилище ForestMarathoneModel.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="Хранилище ForestMarathoneModel.sp_helpdiagramdefinition">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ForestMarathoneModel.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="Хранилище ForestMarathoneModel.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="ForestMarathoneModel.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Хранилище ForestMarathoneModel.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Хранилище ForestMarathoneModel.sp_upgraddiagrams" />
-          <EntitySetMapping Name="Administrator">
-            <EntityTypeMapping TypeName="ForestMarathoneModel.Administrator">
-              <MappingFragment StoreEntitySet="Administrator">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserStatusId" ColumnName="UserStatusId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserStatus">
             <EntityTypeMapping TypeName="ForestMarathoneModel.UserStatus">
               <MappingFragment StoreEntitySet="UserStatus">
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -17,24 +17,25 @@ namespace ForestMarathone
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Users()
         {
-            this.Administrator1 = new HashSet<Administrator>();
-            this.Participant1 = new HashSet<Participant>();
-            this.Sponsors1 = new HashSet<Sponsors>();
+            this.Administrator = new HashSet<Administrator>();
+            this.Participant = new HashSet<Participant>();
+            this.Sponsors = new HashSet<Sponsors>();
         }
     
-        public int Id { get; set; }
+        public int UserId { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public int RoleId { get; set; }
-        public int UserStatusId { get; set; }
+        public string Email { get; set; }
+        public Role RoleId { get; set; }
+        public UStatus UserStatusId { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Administrator> Administrator { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Participant> Participant { get; set; }
         public virtual Roles Roles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Administrator> Administrator1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Participant> Participant1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Sponsors> Sponsors1 { get; set; }
+        public virtual ICollection<Sponsors> Sponsors { get; set; }
         public virtual UserStatus UserStatus { get; set; }
     }
 }

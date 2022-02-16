@@ -20,7 +20,7 @@ namespace ForestMarathone
             this.Users = new HashSet<Users>();
         }
     
-        public int Id { get; set; }
+        public UStatus StatusId { get; set; }
         public string Title { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

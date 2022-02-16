@@ -11,12 +11,10 @@ namespace ForestMarathone
 {
     using System;
     
-    public partial class sp_helpdiagrams_Result
+    public enum UStatus : int
     {
-        public string Database { get; set; }
-        public string Name { get; set; }
-        public int ID { get; set; }
-        public string Owner { get; set; }
-        public int OwnerID { get; set; }
+        Activated = 1,
+        Suspended = 2,
+        Banned = 3
     }
 }

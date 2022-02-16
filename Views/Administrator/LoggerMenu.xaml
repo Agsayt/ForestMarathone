@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:ForestMarathone.Pages.Administrator"
         xmlns:source="clr-namespace:ForestMarathone.AdditionalClasses"
         mc:Ignorable="d"
-        Title="Логгирование" Height="720" Width="1280">
+        WindowStartupLocation="CenterOwner"
+        Title="Логгирование" Height="520" Width="880">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.1*"/>
@@ -15,7 +16,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*"/>
-            <RowDefinition />
+            <RowDefinition Height="0.2*"/>
             <RowDefinition />
             <RowDefinition Height="0.2*"/>
             <RowDefinition Height="0.1*"/>
@@ -32,7 +33,6 @@
 
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.7*"/>
                 <RowDefinition Height="0.3*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="1">
@@ -42,11 +42,11 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal">
                     <TextBlock Text="Тип входа" FontSize="20"/>
-                    <ComboBox Margin="20, 0,0,0" x:Name="_comboBox" ItemsSource="{Binding Source={source:EnumBindingSource {x:Type source:Status}}}" SelectedItem="0"/>
+                    <ComboBox Margin="20, 0,0,0" x:Name="_comboBox" ItemsSource="{Binding Source={source:EnumBindingSource {x:Type source:Status}}}" SelectedItem="1"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
                     <TextBlock Text="Поиск по логину" FontSize="20"/>
-                    <TextBox x:Name="_filter" Margin="20,0,0,0" Width="400"/>
+                    <TextBox x:Name="_filter" Margin="20,0,0,0" Width="255" KeyDown="_filter_KeyDown"/>
                 </StackPanel>
             </Grid>
             

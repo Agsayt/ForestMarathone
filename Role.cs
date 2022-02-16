@@ -11,9 +11,10 @@ namespace ForestMarathone
 {
     using System;
     
-    public partial class sp_helpdiagramdefinition_Result
+    public enum Role : int
     {
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        Administrator = 1,
+        Participant = 2,
+        Sponsor = 3
     }
 }

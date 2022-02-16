@@ -22,6 +22,7 @@ namespace ForestMarathone
         }
     
         public int Id { get; set; }
+        public int UserId { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
@@ -31,13 +32,12 @@ namespace ForestMarathone
         public string Phone { get; set; }
         public decimal Wallet { get; set; }
         public byte[] Photo { get; set; }
-        public int UserId { get; set; }
     
         public virtual Countries Countries { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MarathonResults> MarathonResults { get; set; }
+        public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SponsoredParticipants> SponsoredParticipants { get; set; }
-        public virtual Users Users1 { get; set; }
     }
 }

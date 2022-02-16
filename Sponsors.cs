@@ -30,10 +30,11 @@ namespace ForestMarathone
         public decimal TotalSum { get; set; }
         public byte[] Logo { get; set; }
         public int UserId { get; set; }
+        public decimal CardNumber { get; set; }
     
         public virtual Countries Countries { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SponsoredParticipants> SponsoredParticipants { get; set; }
-        public virtual Users Users1 { get; set; }
+        public virtual Users Users { get; set; }
     }
 }
